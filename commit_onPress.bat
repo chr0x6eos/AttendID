@@ -1,6 +1,6 @@
 setlocal EnableDelayedExpansion
-set /p msg=Enter message:
 for /L %%i in (1,0,2) do (
+set /p msg=Enter message:
 git add .
 git commit -am "%time:~0,8%-%COMPUTERNAME%-%msg%"
 git push
