@@ -18,7 +18,7 @@ while True:
         sleep(5)
         pass
 
-    # Capture every 2nd frame-by-frame
+    # Capture every 60th frame-by-frame
     if count%60 == 0:
         ret, frame = video_capture.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
