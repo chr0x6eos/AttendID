@@ -15,10 +15,12 @@ while True:
     if not video_capture.isOpened():
         print('Unable to load camera.')
         sleep(5)
+        #Pass = null operation
         pass
+    #Sleep for 0.1s for sake of performance
     sleep(0.1)
     
-    # Capture every 2nd frame-by-frame
+    # Capture every frame-by-frame
     ret, frame = video_capture.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
