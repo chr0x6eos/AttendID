@@ -1,3 +1,4 @@
+@echo off
 setlocal EnableDelayedExpansion
 
 set /p msg=Enter message:
