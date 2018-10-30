@@ -1,0 +1,66 @@
+    1  sudo raspi-conf
+    2  raspi-conf
+    3  su
+    4  su root
+    5  sudo root
+    6  sudo raspi/config
+    7  sudo raspi-config
+    8  sudo apt-get update && sudo apt-get upgrade -v
+    9  sudo apt-get install python3.5
+   10  pip
+   11  pip3
+   12  sudo apt-get install pip3
+   13  sudo apt-get install pip
+   14  pip
+   15  sudo apt-get install python-pip
+   16  pip install opencv-python
+   17  pip3 install opencv-python
+   18  sudo apt-get install build-essentials tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdm-dev libsqlite3-dev libssql-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
+   19  sudo apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
+   20  wget https://www.python.org/ftp/python/3.6.5/Python-3.6.5.tar.xz
+   21  tar xf Python-3.6.5.tar.xz #
+   22  tar xf Python-3.6.5.tar.xz
+   23  cd Python-3.6.5/
+   24  ./configure 
+   25  make
+   26  sudo apt-get install python3-pip
+   27  pip3 install opencv-python
+   28  history
+   29  python3
+   30  python3.5
+   31  sudo nano /home/pi/.local/lib/python3.5/site-packages/cv2/__init__.py 
+   32  python3.5
+   33  sudo apt-get install git
+   34  sudo apt-get install libjpeg-dev libpng-dev libtiff-dev
+   35  sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv41-dev
+   36  sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+   37  sudo apt-get install libxvidcore-dev libx264-dev
+   38  sudo apt-get install libatlas-base-dev gfortran
+   39  sudo apt-get install libsm6 libxrender1 libfontconfig1
+   40  sudo apt-get install python3-dev
+   41  python3
+   42  sudo apt-get install libjasper
+   43  sudo apt-get install libjasper.so.1
+   44  sudo apt-get install libjasper-dev
+   45  python3
+   46  git clone https://gitlab.htl-villach.at/posseggs/2018-itp-attendid
+   47  ls
+   48  cd 2018-itp-attendid/q
+   49  cd 2018-itp-attendid/
+   50  ls
+   51  cd webcam_detection/
+   52  python3 detect_webcam_onpress.py 
+   53  cd ..
+   54  rm 2018-itp-attendid/
+   55  rm -rf 2018-itp-attendid/
+   56  cd ..
+   57  git clone https://gitlab.htl-villach.at/posseggs/2018-itp-attendid
+   58  cd Python-3.6.5/
+   59  ls
+   60  sudo make altinstall
+   61  python3
+   62  cd ..
+   63  sudo python3 -m pip install opencv-contrib-python
+   64  history
+   65  touch history.txt
+   66  history > history.txt 
