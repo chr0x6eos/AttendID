@@ -25,7 +25,7 @@ try:
         #passwd="P@ssw0rd$!"
         user="simon",
         passwd="P@ssw0rd$!-278",
-        database="attendid"
+        database="attendID"
     )
     mycursor = myDB.cursor()
     #CreateDB if not already exists
