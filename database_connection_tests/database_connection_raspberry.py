@@ -35,7 +35,7 @@ try:
     #mycursor.execute("CREATE TABLE attendingStudents (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
     
     #Insert into table
-    sql_query = (f"INSERT INTO attendingStudents (TimeStamp,Class,AttendingStudents) VALUE (%s,%s,%s)")
+    sql_query = ("INSERT INTO attendingStudents (TimeStamp,Class,AttendingStudents) VALUE (%s,%s,%s)")
     sql_value = ("2018-11-05 11:31:00","4AHITN", 0)
     mycursor.execute(sql_query,sql_value)
     #Commit changes
