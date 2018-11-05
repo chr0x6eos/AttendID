@@ -12,15 +12,15 @@ def createDB(mycursor, dbName): #Creates DB if it does not already exists
     for x in getDBs(mycursor):
         if x == dbName:
             return
-    mycursor.execute(f"CREATE DATABASE " + dbName) #F is the python string builder
+    mycursor.execute(f'CREATE DATABASE '  + dbName) #F is the python string builder
 
 myDB = None #Same as null
 
 try:
     myDB = mysql.connector.connect(
         host="localhost",
-        #user="simon",
-        #passwd="P@ssw0rd$!-278"
+        #user="possegger",
+        #passwd="P@ssw0rd$!"
         user="simon",
         passwd="P@ssw0rd$!-278",
         database="attendid"
