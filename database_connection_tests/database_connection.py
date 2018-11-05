@@ -13,7 +13,7 @@ def createDB(mycursor, dbName): #Creates DB if it does not already exists
     for x in getDBs(mycursor):
         if x == dbName:
             return
-    mycursor.execute(f'CREATE DATABASE '  + dbName) #F is the python string builder
+    mycursor.execute(f'CREATE DATABASE {dbName}') #F is the python string builder
 
 myDB = None #Same as null
 
@@ -34,7 +34,7 @@ try:
     #mycursor.execute("CREATE TABLE attendingStudents (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
     
     #Insert into table
-    sql_query = ("INSERT INTO attendingStudents (name) VALUE (%s)")
+    sql_query = (f"INSERT INTO attendingStudents (name) VALUE (%s)")
     sql_value = ("Test")
     mycursor.execute(sql_query,sql_value)
     #Commit changes
