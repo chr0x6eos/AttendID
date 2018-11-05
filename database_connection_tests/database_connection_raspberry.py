@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import mysql.connector
-from time import gmtime, strftime
+from time import strftime
 import random
 
 '''
