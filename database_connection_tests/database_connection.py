@@ -12,17 +12,37 @@ def createDB(mycursor, dbName): #Creates DB if it does not already exists
     for x in getDBs(mycursor):
         if x == dbName:
             return
-    mycursor.execute("CREATE DATABASE " + dbName)
+    mycursor.execute(f"CREATE DATABASE " + dbName) #F is the python string builder
+
+myDB = None #Same as null
 
 try:
     myDB = mysql.connector.connect(
         host="localhost",
-        user="possegger",
-        passwd="P@ssw0rd$!"
+        #user="simon",
+        #passwd="P@ssw0rd$!-278"
+        user="simon",
+        passwd="P@ssw0rd$!-278",
+        database="attendid"
     )
     mycursor = myDB.cursor()
-    #CreateDB
-    createDB(mycursor, "testDB")
+    #CreateDB if not already exists
+    #createDB(mycursor, 'attendID')
+
+    #Create Table
+    #mycursor.execute("CREATE TABLE attendingStudents (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
     
+    #Insert into table
+    sql_query = ("INSERT INTO attendingStudents (name) VALUE (%s)")
+    sql_value = ("Test")
+    mycursor.execute(sql_query,sql_value)
+    #Commit changes
+    myDB.commit()
+    print('Changes commited')
+
 except Exception as x:
     print(x)
+
+finally:
+    if myDB:
+        myDB.close()
