@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import mysql.connector
 
 def getDBs(mycursor): #Return all dbs
