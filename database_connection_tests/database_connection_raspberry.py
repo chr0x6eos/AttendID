@@ -43,7 +43,6 @@ try:
     mycursor.execute(sql_query,sql_value)
     #Commit changes
     myDB.commit()
-    print('Changes commited')
 
 except Exception as x:
     print(x)
