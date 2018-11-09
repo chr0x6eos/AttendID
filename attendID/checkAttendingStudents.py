@@ -23,9 +23,13 @@ class DB_Connection:
     def insert(self,value):
         #Query for creating students
         sql_query=("INSERT INTO AttendingStudents (TimeStamp,Class,AttendingStudents) VALUE (%s,%s,%s)")
-        sql_values=value
+        sql_values=value #Value needs to be in format x,y,z
 
+        #Executes the query and writes into the database
         self.mycursor.execute(sql_query,sql_values)
+        #Commit changes to db
+        self.db.commit()
+
 
 
 
@@ -33,7 +37,7 @@ class DB_Connection:
 cascPath ="haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 
-#webcam capture is in this case the webcam
+#Webcam capture is in this case the webcam
 webcam_capture = cv2.VideoCapture(0)
 lastFaces = 0
 
@@ -61,6 +65,7 @@ while True:
     #Convert image to gray img
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+    #This function returns a list of rectangles, where faces appear
     faces = faceCascade.detectMultiScale(
         gray,
         #Change scale factor if too many invalid detections
