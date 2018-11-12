@@ -18,17 +18,19 @@ class DB_Connection:
             )
             self.mycursor = self.db.cursor()
         except Exception as x:
-            print(x)
+            raise Exception('Error occured:' + x)
 
     def insert(self,timeValue,classValue='4AHITN',studentsValue=0):
         #Query for creating students
-        sql_query=("INSERT INTO AttendingStudents (TimeStamp,Class,AttendingStudents) VALUE (%s,%s,%s)") 
-        sql_values=(timeValue,classValue,studentsValue) #Value needs to be in format time,class,students
-
-        #Executes the query and writes into the database
-        self.mycursor.execute(sql_query,sql_values)
-        #Commit changes to db
-        self.db.commit()
+        try:
+            sql_query=("INSERT INTO AttendingStudents (TimeStamp,Class,AttendingStudents) VALUE (%s,%s,%s)") 
+            sql_values=(timeValue,classValue,studentsValue) #Value needs to be in format time,class,students
+            #Executes the query and writes into the database
+            self.mycursor.execute(sql_query,sql_values)
+            #Commit changes to db
+            self.db.commit()
+        except Exception as x:
+            raise Exception('Error occured:' + x)
 
 if len(sys.argv) > 1:
     debug = sys.argv[1] != None #Debug is used to print to console
@@ -43,7 +45,7 @@ db = None
 try:
     db = DB_Connection()
 except Exception as e:
-    print('Error occured' + e)
+    print(e)
     webcam_capture.release()
     sys.exit()
 
@@ -100,7 +102,10 @@ while True:
         for x in numFaces:
             avgFace+=x #Adds all the numbers of faces
         avgFace = int(round(avgFace / len(numFaces))) #Average of faces displayed as an int
-        db.insert(evTime,classValue,avgFace)
+        try:
+            db.insert(evTime,classValue,avgFace)
+        except Exception as e:
+            print(e)
         #Done with the script
         break
 
