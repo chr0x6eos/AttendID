@@ -30,32 +30,11 @@ class DB_Connection:
         #Commit changes to db
         self.db.commit()
 
+debug = sys.argv[1] != None #If not none debug == true -> else false
 
 #Path of the identyfier
 cascPath ="haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
-
-#Webcam capture is in this case the webcam
-webcam_capture = cv2.VideoCapture(0)
-lastFaces = 0
-
-#Function to draw faces on output to show 
-def draw(faces, frame):
-    # Draw a rectangle around the faces
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-
-    # Display the resulting frame
-    cv2.imshow('Video', frame)
-
-#Stores the average amount of faces in the array
-numFaces = []
-
-#Average amount of faces
-avgFace = 0
-
-#Max students --> will be given from website later
-maxStudents = 16
 
 #Creates db obj
 db = None
@@ -65,6 +44,13 @@ except Exception as e:
     print('Error occured' + e)
     webcam_capture.release()
     sys.exit()
+
+#Webcam capture is in this case the webcam
+webcam_capture = cv2.VideoCapture(0)
+
+numFaces = [] #Stores the average amount of faces in the array
+avgFace = 0 #Average amount of faces
+maxStudents = 16 #Max students --> will be given from website later
 
 #Evaluation time
 evTime = strftime("%Y-%m-%d %H:%M:%S")
@@ -101,18 +87,17 @@ while True:
     #Max x stundents in class
     if len(faces) <= maxStudents:
         #Print number of faces
-        if len(faces) > 1 or len(faces)==0: #0 or more then 1 faces found
-            print("{0} faces found!".format(len(faces)))
-        else: #Only 1 face found
-            print("{0} face found!".format(len(faces)))
-        lastFaces = len(faces) #Set amount of faces to current faces if different
+        if debug:
+            if len(faces) > 1 or len(faces)==0: #0 or more then 1 faces found
+                print("{0} faces found!".format(len(faces)))
+            else: #Only 1 face found
+                print("{0} face found!".format(len(faces)))
         numFaces.append(len(faces))
 
     if len(numFaces) >= 50: #5 s
         for x in numFaces:
             avgFace+=x #Adds all the numbers of faces
-        avgFace = avgFace / len(numFaces) #Average of faces displayed as an int
-        avgFace = int(round(avgFace))
+        avgFace = int(round(avgFace / len(numFaces))) #Average of faces displayed as an int
         db.insert(evTime,classValue,avgFace)
         #Done with the script
         break
@@ -121,9 +106,5 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-    #for testing show output
-    #draw(faces,frame)
-    
 # When everything is done, release the capture
 webcam_capture.release()
-#cv2.destroyAllWindows()
