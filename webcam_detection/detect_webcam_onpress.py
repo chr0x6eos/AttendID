@@ -61,8 +61,8 @@ while True:
         break
 
     #for testing show output
-    draw(faces,frame)
+    #draw(faces,frame)
     
 # When everything is done, release the capture
 webcam_capture.release()
-cv2.destroyAllWindows()
+#cv2.destroyAllWindows()

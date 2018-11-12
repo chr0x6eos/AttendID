@@ -20,17 +20,15 @@ class DB_Connection:
         except Exception as x:
             print(x)
 
-    def insert(self,value):
+    def insert(self,timeValue,classValue='4AHITN',studentsValue=0):
         #Query for creating students
-        sql_query=("INSERT INTO AttendingStudents (TimeStamp,Class,AttendingStudents) VALUE (%s,%s,%s)")
-        sql_values=value #Value needs to be in format x,y,z
+        sql_query=("INSERT INTO AttendingStudents (TimeStamp,Class,AttendingStudents) VALUE (%s,%s,%s)") 
+        sql_values=timeValue+','+classValue+','+studentsValue #Value needs to be in format time,class,students
 
         #Executes the query and writes into the database
         self.mycursor.execute(sql_query,sql_values)
         #Commit changes to db
         self.db.commit()
-
-
 
 
 #Path of the identyfier
@@ -49,6 +47,25 @@ def draw(faces, frame):
 
     # Display the resulting frame
     cv2.imshow('Video', frame)
+
+#Stores the average amount of faces in the array
+numFaces = []
+
+#Average amount of faces
+avgFace = 0
+
+#Creates db obj
+db = None
+try:
+    db = DB_Connection()
+except Exception as e:
+    print('Error occured' + e)
+    sys.exit()
+
+#Evaluation time
+evTime = strftime("%Y-%m-%d %H:%M:%S")
+#Classes --> will be given from the website later
+classValue = '4AHITN'
 
 while True:
     #If no webcam is detected wait for 5 seconds
@@ -85,14 +102,23 @@ while True:
         else: #Only 1 face found
             print("{0} face found!".format(len(faces)))
         lastFaces = len(faces) #Set amount of faces to current faces if different
-    
+        numFaces.append(len(faces))
+
+    if len(numFaces) >= 10:
+        for x in numFaces:
+            avgFace+=x #Adds all the numbers of faces
+        avgFace = int(avgFace / len(numFaces)) #Average of faces displayed as an int
+        db.insert(evTime,classValue,avgFace)
+        #Done with the script
+        break
+
     #Press q to exit programm
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
     #for testing show output
-    draw(faces,frame)
+    #draw(faces,frame)
     
 # When everything is done, release the capture
 webcam_capture.release()
-cv2.destroyAllWindows()
+#cv2.destroyAllWindows()
