@@ -29,11 +29,11 @@ class DB_Connection:
         self.mycursor.execute(sql_query,sql_values)
         #Commit changes to db
         self.db.commit()
-try:
-    debug = sys.argv[1] != None #Debug is used to print to console
-except:
-    debug = False
 
+if len(sys.argv) > 1:
+    debug = sys.argv[1] != None #Debug is used to print to console
+else:
+    debug = False
 #Path of the identyfier
 cascPath ="haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
