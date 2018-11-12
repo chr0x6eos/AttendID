@@ -54,12 +54,16 @@ numFaces = []
 #Average amount of faces
 avgFace = 0
 
+#Max students --> will be given from website later
+maxStudents = 16
+
 #Creates db obj
 db = None
 try:
     db = DB_Connection()
 except Exception as e:
     print('Error occured' + e)
+    webcam_capture.release()
     sys.exit()
 
 #Evaluation time
@@ -94,8 +98,8 @@ while True:
         #,maxSize=(x,x)
     )
 
-    #If a new amount of faces detected
-    if len(faces) != lastFaces:
+    #Max x stundents in class
+    if len(faces) <= maxStudents:
         #Print number of faces
         if len(faces) > 1 or len(faces)==0: #0 or more then 1 faces found
             print("{0} faces found!".format(len(faces)))
@@ -104,7 +108,7 @@ while True:
         lastFaces = len(faces) #Set amount of faces to current faces if different
         numFaces.append(len(faces))
 
-    if len(numFaces) >= 10:
+    if len(numFaces) >= 50: #5 s
         for x in numFaces:
             avgFace+=x #Adds all the numbers of faces
         avgFace = int(avgFace / len(numFaces)) #Average of faces displayed as an int
