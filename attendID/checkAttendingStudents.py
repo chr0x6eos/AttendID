@@ -111,7 +111,8 @@ while True:
     if len(numFaces) >= 50: #5 s
         for x in numFaces:
             avgFace+=x #Adds all the numbers of faces
-        avgFace = int(avgFace / len(numFaces)) #Average of faces displayed as an int
+        avgFace = avgFace / len(numFaces) #Average of faces displayed as an int
+        avgFace = int(round(avgFace))
         db.insert(evTime,classValue,avgFace)
         #Done with the script
         break
