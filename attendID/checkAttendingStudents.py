@@ -29,8 +29,10 @@ class DB_Connection:
         self.mycursor.execute(sql_query,sql_values)
         #Commit changes to db
         self.db.commit()
-
-debug = sys.argv[1] != None #If not none debug == true -> else false
+try:
+    debug = sys.argv[1] != None #Debug is used to print to console
+except:
+    debug = False
 
 #Path of the identyfier
 cascPath ="haarcascade_frontalface_default.xml"
