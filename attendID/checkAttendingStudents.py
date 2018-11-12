@@ -23,7 +23,7 @@ class DB_Connection:
     def insert(self,timeValue,classValue='4AHITN',studentsValue=0):
         #Query for creating students
         sql_query=("INSERT INTO AttendingStudents (TimeStamp,Class,AttendingStudents) VALUE (%s,%s,%s)") 
-        sql_values=timeValue+','+classValue+','+studentsValue #Value needs to be in format time,class,students
+        sql_values=(timeValue,classValue,studentsValue) #Value needs to be in format time,class,students
 
         #Executes the query and writes into the database
         self.mycursor.execute(sql_query,sql_values)
