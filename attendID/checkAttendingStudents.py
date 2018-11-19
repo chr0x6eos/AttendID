@@ -40,17 +40,19 @@ else:
 cascPath ="haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 
+webcam_capture = None
 #Creates db obj
 db = None
 try:
     db = DB_Connection()
 except Exception as e:
     print(e)
-    webcam_capture.release()
+    if webcam_capture != None:
+        webcam_capture.release()
     sys.exit()
 
-#Webcam capture is in this case the webcam
 webcam_capture = cv2.VideoCapture(0)
+#Webcam capture is in this case the webcam
 
 numFaces = [] #Stores the average amount of faces in the array
 avgFace = 0 #Average amount of faces
