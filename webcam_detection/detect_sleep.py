@@ -18,7 +18,7 @@ while True:
         #Pass = null operation
         pass
     #Sleep for 0.1s for sake of performance
-    sleep(0.1)
+    sleep(0.05)
     
     # Capture every frame-by-frame
     ret, frame = video_capture.read()
