@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import cv2
+import os
 import sys
 import time
 import mysql.connector
@@ -42,7 +43,7 @@ def debugMsg(message):
         print(message)
 
 #Path of the identyfier
-cascPath ="haarcascade_frontalface_default.xml"
+cascPath = os.path.join(os.path.dirname(__file__), "../classifiers/haarcascade_frontalface_default.xml")
 faceCascade = cv2.CascadeClassifier(cascPath)
 
 webcam_capture = None
