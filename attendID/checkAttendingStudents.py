@@ -43,15 +43,8 @@ def debugMsg(message):
         print(message)
 
 #Path of the identyfier
-faceCascade = ""
-try:
-    faceCascade = cv2.CascadeClassifier("2018-itp-attendid/classifiers/haarcascade_frontalface_default.xml")
-except Exception as e:
-    print(e)
-    sys.exit()
-if faceCascade == "":
-    print("Could not read classifier")
-    sys.exit()
+cascPath = "haarcascade_frontalface_default.xml"
+faceCascade = cv2.CascadeClassifier(cascPath)
 
 webcam_capture = None
 numFaces = [] #Stores the average amount of faces in the array
