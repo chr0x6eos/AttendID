@@ -43,11 +43,14 @@ def debugMsg(message):
         print(message)
 
 #Path of the identyfier
-cascPath = os.path.join(os.path.dirname(__file__), "../classifiers/haarcascade_frontalface_default.xml")
-if cv2.CascadeClassifier::load(cascPath):
-    faceCascade = cv2.CascadeClassifier(cascPath)
-else:
-    print("Error loading classifier!")
+faceCascade = ""
+try:
+    faceCascade = cv2.CascadeClassifier("2018-itp-attendid/classifiers/haarcascade_frontalface_default.xml")
+except Exception as e:
+    print(e)
+    sys.exit()
+if faceCascade == "":
+    print("Could not read classifier")
     sys.exit()
 
 webcam_capture = None
