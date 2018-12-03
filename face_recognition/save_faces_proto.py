@@ -49,6 +49,7 @@ else:
     dirName = "faces/"+usrName
     try:
     # Create target Directory
+        os.mkdir("faces")
         os.mkdir(dirName)
     except FileExistsError:
         pass #Already exists
