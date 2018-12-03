@@ -82,6 +82,10 @@ if len(sys.argv) > 2:
 if len(sys.argv) > 3:
     debug = sys.argv[3] != None #Debug is used to print to console
 
+if maxStudents == 0 or classValue == "noClass":
+    print("Invalid parameters")
+    sys.exit()
+
 webcam_capture = cv2.VideoCapture(0)
 #Webcam capture is in this case the webcam
 
