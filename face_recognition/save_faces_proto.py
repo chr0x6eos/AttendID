@@ -5,6 +5,7 @@ import os
 import numpy
 import pickle
 from time import strftime
+import random
 
 
 print("Done importing")
@@ -24,6 +25,8 @@ if action == "":
 
 labels = labels = {"name":1}
 
+count = 10
+
 if action == "recognize" or action == "r":
     recognizer = cv2.face.LBPHFaceRecognizer_create()
     recognizer.read("trainer.yml")
@@ -33,6 +36,14 @@ if action == "recognize" or action == "r":
         labels = {v:k for k,v in old_labels.items()}
 else:
     usrName = input("Enter your name:")
+    count = input("How often to save:")
+    if count != "":
+        try:
+            if int(count) > 0:
+                count = int(count)
+        except:
+            pass
+
     if usrName == "":
         usrName = "unknownFace"
     dirName = "faces/"+usrName
@@ -50,8 +61,8 @@ def saveFaces (faces,saved_faces):
                 saved_faces += 1
                                #square coordinates (ystart, yend + xstart, xend) of face
                 img_pos = frame[y:y+h,x:x+w]
-                evTime = strftime("%d-%H:%M:%S") #Date too long does not save
-                img_item = (dirName + "/" + evTime + "_" + "{0}".format(saved_faces) + ".png")
+                img_item = (dirName + "/" + random.randint(1000,9999) + "_" + "{0}".format(saved_faces) + ".png")
+                print(img_item)
                 cv2.imwrite(img_item, img_pos)
                 print("Saved")
                 #Save 10 
@@ -83,7 +94,7 @@ while True:
         if len(faces) > 0:
             print ("Saving faces")
             print(saved_faces)
-            if saved_faces < 10:
+            if saved_faces < count:
                 saved_faces = saveFaces(faces,saved_faces)
             else:
                 break
