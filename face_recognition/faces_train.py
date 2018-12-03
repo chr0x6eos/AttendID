@@ -36,6 +36,7 @@ image_dir = os.path.join(BASE_DIR, "faces")
 
 cascPath="haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath) 
+#faceRecognizer = cv2.face.createLBPHFaceRecognizer()
 faceRecognizer = cv2.face.LBPHFaceRecognizer_create()
 
 current_id = 0
