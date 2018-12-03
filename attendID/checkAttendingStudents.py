@@ -44,7 +44,11 @@ def debugMsg(message):
 
 #Path of the identyfier
 cascPath = os.path.join(os.path.dirname(__file__), "../classifiers/haarcascade_frontalface_default.xml")
-faceCascade = cv2.CascadeClassifier(cascPath)
+if cv2.CascadeClassifier::load(cascPath):
+    faceCascade = cv2.CascadeClassifier(cascPath)
+else:
+    print("Error loading classifier!")
+    sys.exit()
 
 webcam_capture = None
 numFaces = [] #Stores the average amount of faces in the array
@@ -92,7 +96,6 @@ except Exception as e:
         webcam_capture.release()
     debugMsg("Error while creating db connection, exiting...")
     sys.exit()
-
 
 webcam_capture = cv2.VideoCapture(0)
 #Webcam capture is in this case the webcam
