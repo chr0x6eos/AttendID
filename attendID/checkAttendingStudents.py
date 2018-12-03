@@ -65,7 +65,7 @@ debug = False
 if len(sys.argv) > 1:
     if sys.argv[1] != "":
         try:
-            classValue = sys.argv[2]
+            classValue = sys.argv[1]
         except:
             print("Error reading param: classValue (arg[1])")
             sys.exit()
