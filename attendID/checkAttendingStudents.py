@@ -32,10 +32,10 @@ class DB_Connection:
         except Exception as x:
             raise Exception('Error occured:' + x)
 
-if len(sys.argv) > 1:
-    debug = sys.argv[1] != None #Debug is used to print to console
-else:
-    debug = False
+def debug(message):
+    print(message)
+    pass
+
 #Path of the identyfier
 cascPath ="haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
@@ -51,17 +51,39 @@ except Exception as e:
         webcam_capture.release()
     sys.exit()
 
-webcam_capture = cv2.VideoCapture(0)
-#Webcam capture is in this case the webcam
-
 numFaces = [] #Stores the average amount of faces in the array
 avgFace = 0 #Average amount of faces
-maxStudents = 16 #Max students --> will be given from website later
 
 #Evaluation time
 evTime = strftime("%Y-%m-%d %H:%M:%S")
 #Classes --> will be given from the website later
-classValue = '4AHITN'
+classValue = 'noClass'
+maxStudents = 0
+debug = False
+
+#Websites tells the script the needed params: classes, maxStudents, (debug)
+if len(sys.argv) > 1:
+    if sys.argv[1] != "":
+        try:
+            classValue = sys.argv[2]
+        except:
+            print("Error reading param: classValue (arg[1])")
+            sys.exit()
+
+if len(sys.argv) > 2:
+    if sys.argv[2] != "":
+        try:
+            if int(sys.argv[2]) >= 0:
+                maxStudents = int(sys.argv[2])
+        except:
+            print("Error reading param: maxStudents (arg[2])")
+            sys.exit()
+
+if len(sys.argv) > 3:
+    debug = sys.argv[3] != None #Debug is used to print to console
+
+webcam_capture = cv2.VideoCapture(0)
+#Webcam capture is in this case the webcam
 
 while True:
     #If no webcam is detected wait for 5 seconds
