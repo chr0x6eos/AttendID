@@ -17,47 +17,42 @@ class DB_Connection:
             database="attendID"
             )
             self.mycursor = self.db.cursor()
+            debugMsg("Initiated db connection successfully")
         except Exception as x:
             raise Exception('Error occured:' + x)
 
     def insert(self,timeValue,classValue='4AHITN',studentsValue=0):
         #Query for creating students
-        try:
+        debugMsg("Trying to insert to db")
+
+        try:            
             sql_query=("INSERT INTO AttendingStudents (ReadingTime,Class,AttendingStudents) VALUE (%s,%s,%s)") 
             sql_values=(timeValue,classValue,studentsValue) #Value needs to be in format time,class,students
             #Executes the query and writes into the database
             self.mycursor.execute(sql_query,sql_values)
             #Commit changes to db
             self.db.commit()
+
+            debugMsg("Successfully inserted")
         except Exception as x:
             raise Exception('Error occured:' + x)
 
-def debug(message):
-    print(message)
-    pass
+def debugMsg(message):
+    if debug:
+        print(message)
 
 #Path of the identyfier
 cascPath ="haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 
 webcam_capture = None
-#Creates db obj
-db = None
-try:
-    db = DB_Connection()
-except Exception as e:
-    print(e)
-    if webcam_capture != None:
-        webcam_capture.release()
-    sys.exit()
-
 numFaces = [] #Stores the average amount of faces in the array
 avgFace = 0 #Average amount of faces
 
 #Evaluation time
 evTime = strftime("%Y-%m-%d %H:%M:%S")
 #Classes --> will be given from the website later
-classValue = 'noClass'
+classValue = "noClass"
 maxStudents = 0
 debug = False
 
@@ -86,8 +81,21 @@ if maxStudents == 0 or classValue == "noClass":
     print("Invalid parameters")
     sys.exit()
 
+#Creates db obj
+db = None
+try:
+    db = DB_Connection()
+except Exception as e:
+    print(e)
+    if webcam_capture != None:
+        webcam_capture.release()
+    debugMsg("Error while creating db connection, exiting...")
+    sys.exit()
+
+
 webcam_capture = cv2.VideoCapture(0)
 #Webcam capture is in this case the webcam
+debugMsg("Starting to read from webcam")
 
 while True:
     #If no webcam is detected wait for 5 seconds
@@ -103,6 +111,8 @@ while True:
     res, frame = webcam_capture.read()
     #Convert image to gray img
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    debugMsg("Running face detector")
 
     #This function returns a list of rectangles, where faces appear
     faces = faceCascade.detectMultiScale(
@@ -127,9 +137,11 @@ while True:
         numFaces.append(len(faces))
 
     if len(numFaces) >= 50: #5 s
+        debugMsg("Calculating average")
         for x in numFaces:
             avgFace+=x #Adds all the numbers of faces
         avgFace = int(round(avgFace / len(numFaces))) #Average of faces displayed as an int
+        debugMsg("Average faces:" + str(avgFace))
         try:
             db.insert(evTime,classValue,avgFace)
         except Exception as e:
@@ -139,7 +151,9 @@ while True:
 
     #Press q to exit programm
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        debugMsg("Force quit initiated")
         break
 
 # When everything is done, release the capture
 webcam_capture.release()
+debugMsg("Webcam release, completely done now")
