@@ -100,6 +100,7 @@ while True:
             if saved_faces < count:
                 saved_faces = saveFaces(faces,saved_faces)
             else:
+                print("Done saving")
                 break
     elif action == "recognize" or action == "r":
         name = "Unknown Face"
@@ -124,5 +125,6 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+print("Completely done")
 # When everything is done, release the capture
 webcam_capture.release()
