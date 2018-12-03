@@ -50,9 +50,12 @@ else:
     try:
     # Create target Directory
         os.mkdir("faces")
-        os.mkdir(dirName)
     except FileExistsError:
         pass #Already exists
+    try:
+        os.mkdir(dirName)
+    except FileExistsError:
+        pass
 
 print("Created folder")
 
@@ -62,8 +65,7 @@ def saveFaces (faces,saved_faces):
                 saved_faces += 1
                                #square coordinates (ystart, yend + xstart, xend) of face
                 img_pos = frame[y:y+h,x:x+w]
-                img_item = (dirName + "/" + random.randint(1000,9999) + "_" + "{0}".format(saved_faces) + ".png")
-                print(img_item)
+                img_item = (dirName + "/" + str(random.randint(1000,99999)) + "_" + "{0}".format(saved_faces) + ".png")
                 cv2.imwrite(img_item, img_pos)
                 print("Saved")
                 #Save 10 
