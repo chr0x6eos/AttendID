@@ -141,8 +141,7 @@ while True:
         debugMsg("Saving last computed img for debugging")
         for (x,y,w,h) in faces: #Drawing rectangle
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        path = "1.png"
-        cv2.imwrite(path, frame)
+            cv2.imwrite("/var/www/html/LAST_READING/reading.png",frame)
 
         #Calculating average
         debugMsg("Calculating average")
