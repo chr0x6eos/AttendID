@@ -141,7 +141,10 @@ while True:
         debugMsg("Saving last computed img for debugging")
         for (x,y,w,h) in faces: #Drawing rectangle
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        status = cv2.imwrite("/var/www/html/LAST_READING/reading.png",frame)
+        path = "/var/www/html/LAST_READING/reading.png"
+        if os.path.exists(path): #If file already exists delete and rewrite
+            os.remove(path)
+        status = cv2.imwrite(path,frame)
         debugMsg("Saved img with code: {0}".format(status))
 
         #Calculating average
