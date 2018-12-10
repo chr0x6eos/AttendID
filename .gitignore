@@ -1,7 +1,10 @@
 #ignore saved faces
-face_recognition\faces\*
-face_recognition\trainer.yml
-face_recognition\labels.pickle
-attendID\*.bat
+project\face_recognition\faces\*
+project\face_recognition\*.yml
+project\face_recognition\*.pickle
+project\face_recognition\_*
+project\attendID\*.bat
+tatü\*.bat
 *.png
 *.jpg
+*.bat
