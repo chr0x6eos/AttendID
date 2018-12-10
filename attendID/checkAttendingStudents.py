@@ -85,7 +85,8 @@ if maxStudents == 0 or classValue == "noClass":
 #Creates db obj
 db = None
 try:
-    db = DB_Connection()
+    pass
+    #db = DB_Connection()
 except Exception as e:
     print(e)
     if webcam_capture != None:
@@ -141,8 +142,8 @@ while True:
         debugMsg("Saving last computed img for debugging")
         for (x,y,w,h) in faces: #Drawing rectangle
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        cv2.imwrite("/var/www/html/LAST_READING/reading.png", frame)
-        
+        cv2.imwrite("reading.png", frame)
+
         #Calculating average
         debugMsg("Calculating average")
         for x in numFaces:
