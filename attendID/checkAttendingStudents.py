@@ -137,6 +137,13 @@ while True:
         numFaces.append(len(faces))
 
     if len(numFaces) >= 50: #5 s
+        #Saving a image for debugging purpose
+        debugMsg("Saving last computed img for debugging")
+        for (x,y,w,h) in faces: #Drawing rectangle
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        cv2.imwrite("/var/www/html/LAST_READING/reading.png", frame)
+        
+        #Calculating average
         debugMsg("Calculating average")
         for x in numFaces:
             avgFace+=x #Adds all the numbers of faces
