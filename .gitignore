@@ -3,3 +3,5 @@ face_recognition\faces\*
 face_recognition\trainer.yml
 face_recognition\labels.pickle
 attendID\*.bat
+*.png
+*.jpg
