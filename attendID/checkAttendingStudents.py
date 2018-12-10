@@ -141,9 +141,9 @@ while True:
         debugMsg("Saving last computed img for debugging")
         for (x,y,w,h) in faces: #Drawing rectangle
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            status = cv2.imwrite("/var/www/html/LAST_READING/reading.png",frame)
-            print(status)
-            debugMsg("Saved img with code: {0}".format(status))
+        status = cv2.imwrite("/var/www/html/LAST_READING/reading.png",frame)
+        print(status)
+        debugMsg("Saved img with code: {0}".format(status))
 
         #Calculating average
         debugMsg("Calculating average")
