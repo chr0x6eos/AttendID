@@ -85,8 +85,7 @@ if maxStudents == 0 or classValue == "noClass":
 #Creates db obj
 db = None
 try:
-    pass
-    #db = DB_Connection()
+    db = DB_Connection()
 except Exception as e:
     print(e)
     if webcam_capture != None:
