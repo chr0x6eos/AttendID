@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+#Importing all needed libraries / modules
 import cv2
 import os
 import sys
@@ -7,6 +8,7 @@ import mysql.connector
 from time import sleep
 from time import strftime
 
+#Class for database connection and manipulation
 class DB_Connection:
 
     def __init__(self):
@@ -167,4 +169,4 @@ while True:
 
 # When everything is done, release the capture
 webcam_capture.release()
-debugMsg("Webcam release, completely done now")
+debugMsg("Webcam released, completely done now")
