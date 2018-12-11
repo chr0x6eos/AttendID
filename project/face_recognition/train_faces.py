@@ -77,5 +77,9 @@ def train():
 		pickle.dump(label_ids, f)
 
 	#Training
-	faceRecognizer.train(train_faces,np.array(train_ids))
-	faceRecognizer.save("trainer.yml")
+	if len(train_faces) > 0 and len(train_ids) > 0:
+		faceRecognizer.train(train_faces,np.array(train_ids))
+		faceRecognizer.save("trainer.yml")
+	else:
+		print("No training data! Save some data first!")
+		return -1

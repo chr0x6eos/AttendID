@@ -8,44 +8,64 @@ from time import strftime
 import random
 import train_faces
 
-def action_save(faces,saved_faces):
+def action_save(faces,saved_faces,recognizer):
     #If a face is found save the face as an img
     if len(faces) > 0:
-        print ("Saving faces")
-        print(saved_faces)
+        print ("Saving faces nr. {0}".format(saved_faces))
         if saved_faces < count:
-            return saveFaces(faces,saved_faces)
+            return saveFaces(faces,saved_faces), {"name":1}, recognizer
         else:
             print("Done saving")
-            train_faces.train() #Train the "AI" with the saved faces
             try:
-                recognizer.read("trainer.yml")
-                with open("labels.pickle", 'rb') as f:
-                    old_labels = pickle.load(f)
-                    #inverting
-                    labels = {v:k for k,v in old_labels.items()}
+                recognizer, labels = train(recognizer)
+                return -1, labels, recognizer
+            except ValueError:
+                return -1, -1, recognizer
             except Exception as e:
-                print("Error: {0}!".format(e))
-                sys.exit()
-            return -1
+                print("Error occured: {0}".format(e))
+                return -1,-1, recognizer
 
-def action_recognize():
-    res, frame = webcam_capture.read()
+
+def action_recognize(gray,faces,frame,recognizer,labels,trained):
     name = "Unknown Face"
+    print (trained)
+    if not trained:
+        try:
+            recognizer, labels = train(recognizer)
+            trained = True
+        except ValueError:
+            return -1
+        
+    print(labels)
     for (x,y,w,h) in faces:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
         gray = gray[y:y+h,x:x+w]
         try:
             id_, confidence = recognizer.predict(gray)
-            print(confidence)
-            #If the confidence for a certain face is higher than 45 and lower equal 100
-            if confidence >= 50 and confidence <= 75: 
+            #If the confidence for a certain face is higher than 45 and lower equal 85
+            if confidence >= 45 and confidence <= 85: 
                                         #Confidence shows in percent
                 name = labels[id_] + "{0:.2f}%".format(round(100 - confidence, 2))
         except:
             pass
-        writeName(name)
+        writeName(name,x,y)
     cv2.imshow('Video', frame)
+
+def train(recognizer):
+    if train_faces.train() == -1: #Train the "AI" with the saved faces
+        raise ValueError("No training data!")
+    else:
+        try:
+            recognizer.read("trainer.yml")
+            with open("labels.pickle", 'rb') as f:
+                old_labels = pickle.load(f)
+                #inverting
+                return recognizer, {v:k for k,v in old_labels.items()}
+        except Exception as e:
+            print("Error: {0}!".format(e))
+            sys.exit()
+
+trained = False
 
 print("Done importing")
 #cascPath ="../classifiers/haarcascade_frontalface_default.xml"
@@ -62,7 +82,7 @@ if action == "":
     print ("No action set! Use 'save' for saving recognized faces to the file system or 'recognize' to recognized already identified faces.")
     sys.exit(1)
 
-labels = labels = {"name":1}
+labels = {"name":1}
 
 count = 10
 
@@ -105,7 +125,7 @@ def saveFaces (faces,saved_faces):
                 #Save 10 
     return saved_faces
 
-def writeName(name):
+def writeName(name,x,y):
     font = cv2.FONT_HERSHEY_SIMPLEX
     color = (255,255,255)
     stroke = 2
@@ -128,19 +148,31 @@ while True:
     faces = faceCascade.detectMultiScale(gray,scaleFactor=1.2,minNeighbors=5,minSize=(30, 30))
 
     if action == "save" or action == "s":
-        saved_faces = action_save(faces,saved_faces)
-        if saved_faces == -1:
-            saved_faces = 0
-            action = "125884016_reset"
+        if len(faces) != 0:
+            try:
+                saved_faces, labels, recognizer = action_save(faces,saved_faces,recognizer)
+                if saved_faces == -1:
+                    saved_faces = 0
+                    action = "125884016_reset"
+                    if labels == -1:
+                        labels = {"name":1}
+                    else:
+                        trained = True
+            except Exception as e:
+                print("Error occured: {0}".format(e))
 
     elif action == "recognize" or action == "r":
-        action_recognize()
+        if action_recognize(gray,faces,frame,recognizer,labels,trained) == -1:
+            action = "125884016_reset"
 
     elif action == "125884016_reset":  
         action = input("Enter the action to perform:")
         if action == "":
             print ("No action set! Use 'save' for saving recognized faces to the file system or 'recognize' to recognized already identified faces.")
-            sys.exit(1)
+            break
+
+    elif action == "exit" or action == "quit" or action == "e" or action == "q":
+        break
     else: 
         print("Action unknown! Use: 'save' for saving recognized faces to the file system or 'recognize' to recognized already identified faces.")
         break
