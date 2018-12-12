@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#Global vars
+#REPOSITORY=$0 #-> if other repo should be used
+REPOSITORY="https://gitlab.htl-villach.at/bernstef/attendid-ui"
+
+if [ “$(id -u)” != “0” ]; then
+   echo “This script must be run as root” 1>&2
+   exit 1
+else
+   #Change to folder
+   cd /var/www/html
+   #Clone repository
+   git clone $REPOSITORY 
+
+   # Change owner and permissions of LAST_READING
+   chown www-data /var/www/html/LAST_READING
+   chmod 770 /var/www/html/LAST_READING
+
+   echo "Done"
+fi
