@@ -8,7 +8,7 @@ from time import strftime
 import random
 import train_faces
 
-def action_save(faces,saved_faces,recognizer):
+def action_save(faces, saved_faces, recognizer):
     #If a face is found save the face as an img
     if len(faces) > 0:
         print ("Saving faces nr. {0}".format(saved_faces))
@@ -23,10 +23,10 @@ def action_save(faces,saved_faces,recognizer):
                 return -1, -1, recognizer
             except Exception as e:
                 print("Error occured: {0}".format(e))
-                return -1,-1, recognizer
+                return -1, -1, recognizer
 
 
-def action_recognize(gray,faces,frame,recognizer,labels,trained):
+def action_recognize(gray, faces, frame, recognizer, labels, trained):
     name = "Unknown Face"
     print (trained)
     if not trained:
