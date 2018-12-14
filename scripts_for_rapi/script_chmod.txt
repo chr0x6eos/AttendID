@@ -11,7 +11,14 @@ else
    #Change to folder
    cd /var/www/html
    #Clone repository
-   git clone $REPOSITORY 
+   git clone $REPOSITORY
+   echo "Cloning..."
+   cd attendid-ui
+   mv * ../
+   mv .* ../
+   cd ../
+   rm -rf attendid-ui
+   echo "Cleaning up..."
 
    # Change owner and permissions of LAST_READING
    chown www-data /var/www/html/LAST_READING
