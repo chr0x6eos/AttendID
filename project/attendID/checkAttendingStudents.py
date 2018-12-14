@@ -22,9 +22,9 @@ class DB_Connection:
             self.mycursor = self.db.cursor()
             debugMsg("Initiated db connection successfully")
         except Exception as x:
-            raise Exception('Error occured:' + x)
+            raise Exception("Error occured:" + x)
 
-    def insert(self,timeValue,classValue='4AHITN',studentsValue=0):
+    def insert(self,timeValue,classValue="4AHITN",studentsValue=0):
         #Query for creating students
         debugMsg("Trying to insert to db")
 
@@ -38,7 +38,7 @@ class DB_Connection:
 
             debugMsg("Successfully inserted")
         except Exception as x:
-            raise Exception('Error occured:' + x)
+            raise Exception("Error occured:" + x)
 
 def debugMsg(message):
     if debug:
@@ -92,19 +92,27 @@ except Exception as e:
     print(e)
     if webcam_capture != None:
         webcam_capture.release()
-    debugMsg("Error while creating db connection, exiting...")
+    print("Error while creating db connection, exiting...")
     sys.exit()
 
 webcam_capture = cv2.VideoCapture(0)
 #Webcam capture is in this case the webcam
 debugMsg("Starting to read from webcam")
 
+#How often webcam could not be read
+errorCam = 0
+
 while True:
     #If no webcam is detected wait for 5 seconds
     if not webcam_capture.isOpened():
-        print('Unable to load camera.')
+        errorCam+=1
+        print("Unable to load camera. {0}. try".format(errorCam))
         sleep(5)
-        pass
+        if errorCam < 3:
+            continue #Jumps back to beginning of loop
+        else:
+            print("Could not access camera. Exiting...")
+            sys.exit()
 
     #Sleep to manage performance on cpu
     sleep(0.1)
