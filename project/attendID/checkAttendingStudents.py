@@ -151,7 +151,7 @@ while True:
         debugMsg("Saving last computed img for debugging")
         for (x,y,w,h) in faces: #Drawing rectangle
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        path = "/var/www/html/LAST_READING/reading.png"
+        path = "/var/www/html/pictures/reading.png"
         if os.path.exists(path): #If file already exists delete and rewrite
             os.remove(path)
         status = cv2.imwrite(path,frame)
