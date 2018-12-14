@@ -166,7 +166,7 @@ while True:
                     except Exception as e:
                         debugMsg("Error: {0}".format(e))
                     writeName(name, x, y)
-                cv2.imshow('Recognizing faces...', frame)
+            cv2.imshow('Recognizing faces...', frame)
         else:
             print("Could not create recognizer! Please check if there is data to train on")
             action = action_reset
@@ -194,11 +194,13 @@ while True:
                         recognizer, labels = train(recognizer)
                         debugMsg(labels)
                         trained = True
+                        saved_faces = 0
                         action = action_reset
+                        usrName = ""
             except Exception as e:
                 debugMsg("Error occurred: {0}".format(e))
                 print("Error occurred while saving")
-                usrName = "" #Resets user name
+                usrName = ""  # Resets user name
                 action = action_reset
 
     elif action in actionList_exit:
