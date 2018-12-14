@@ -13,55 +13,6 @@ def debugMsg(message):
     if debug:
         print(message)
 
-def action_save(faces, saved_faces, dirName, recognizer):
-    #If a face is found save the face as an img
-    if len(faces) > 0:
-        debugMsg("Saving faces nr. {0}".format(saved_faces))
-        if saved_faces < count: #If images still shall be saved
-            return saveFaces(faces,saved_faces,dirName), {"name":1}, recognizer
-        else:
-            debugMsg("Done saving")
-            try: #When done saving try to train the recognizer
-                recognizer, labels = train(recognizer)
-                debugMsg(labels)
-                return -1, labels, recognizer #Returns -1 (done saving), the labels of the faces, the recognizer
-            except ValueError: #Raises a value error if no training data is here
-                return -1, -1, recognizer #Returns -1 (done saving), -1 (could not create recognizer), the recognizer (empty)
-            except Exception as e: #Other error
-                print("Error occurred: {0}".format(e))
-                return -1, -1, recognizer
-
-def action_recognize(gray, faces, frame, recognizer, labels, trained):
-    if not trained: #If not yet trained, try to train
-        try:
-            recognizer, labels = train(recognizer)
-            debugMsg(labels)
-        except ValueError:
-            return -1 #-1 means could not train -> save faces first!
-        except Exception as e:
-            print ("Error occurred: {0}".format(e))
-            return -1
-    if len(faces) > 0:
-        for (x,y,w,h) in faces:
-            name = "Unknown" #Default recognized face name is unknown
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-            gray = gray[y:y+h,x:x+w]
-            try:
-                    #Confidence of 0 = 100%
-                id_, confidence = recognizer.predict(gray)
-                    #If the confidence for a certain face is higher than 45 and lower equal 85
-                debugMsg(labels[id_] + confidence)
-                if confidence <= 50:
-                    name = labels[id_]
-                    if debug: #Confidence shown in percent
-                        name += " {0:.2f}%".format(round(100 - confidence, 2))
-            except Exception as e:
-                debugMsg("Error: {0}".format(e))
-
-            writeName(name,x,y)
-        cv2.imshow('Recognizing faces...', frame)
-    return recognizer
-
 def train(recognizer):
     if train_faces.train() == -1: #Train the "AI" with the saved faces -> -1 means no data to train exists
         raise ValueError("No training data!")
@@ -75,7 +26,7 @@ def train(recognizer):
                 debugMsg("Done training")
                 return recognizer, {v:k for k,v in old_labels.items()} #returns the trained recognizer and the labels
         except Exception as e:
-            print("Error: {0}!".format(e))
+            debugMsg("Error: {0}!".format(e))
 
 def setSaveParams():
     usrName = input("Enter your name:")
@@ -190,12 +141,37 @@ while True:
     faces = faceCascade.detectMultiScale(gray,scaleFactor=1.2,minNeighbors=5,minSize=(30, 30))
 
     if action in actionList_recognize:
-        value = action_recognize(gray, faces, frame, recognizer, labels, trained) #-1 --> Could not train recognizer -> therefore try other action first
-        if value != -1:
-            trained = True
-            recognizer = value
+        #Insert action recognize here
+        if not trained:  # If not yet trained, try to train
+            try:
+                recognizer, labels = train(recognizer)
+                debugMsg(labels)
+                trained = True
+            except Exception as e:
+                debugMsg("Error occurred: {0}".format(e))
+                trained = False
+        #Only if trained try to recognize
+        if trained:
+            if len(faces) > 0:
+                for (x, y, w, h) in faces:
+                    name = "Unknown"  # Default recognized face name is unknown
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                    gray = gray[y:y + h, x:x + w]
+                    try:
+                        # Confidence of 0 = 100%
+                        id_, confidence = recognizer.predict(gray)
+                        # If the confidence for a certain face is higher than 45 and lower equal 85
+                        debugMsg(labels[id_] + " {0:.2f}".format(round(100 - confidence, 2)))
+                        if  confidence <= 50:
+                            name = labels[id_]
+                            if debug:  # Confidence shown in percent
+                                name = labels[id_] + " {0:.2f}%".format(round(100 - confidence, 2))
+                    except Exception as e:
+                        debugMsg("Error: {0}".format(e))
+                    writeName(name, x, y)
+                cv2.imshow('Recognizing faces...', frame)
         else:
-            trained = False
+            print("Could not create recognizer! Please check if there is data to train on")
             action = action_reset
 
     elif action == action_reset:
@@ -208,20 +184,25 @@ while True:
         if usrName == "":
             usrName, dirName, count = setSaveParams()
 
-        if len(faces) != 0:
+        #Only 1 face detected -> save
+        if len(faces) == 1:
             try:
-                saved_faces, labels, recognizer = action_save(faces,saved_faces,dirName,recognizer)
-                if saved_faces == -1:
-                    saved_faces = 0
-                    action = action_reset
-                    if labels == -1:
-                        labels = {"name":1}
+                # If a face is found save the face as an img
+                if len(faces) > 0:
+                    debugMsg("Saving faces nr. {0}".format(saved_faces))
+                    if saved_faces < count:  # If images still shall be saved
+                        saved_faces = saveFaces(faces, saved_faces, dirName)
                     else:
+                        debugMsg("Done saving")
+                        recognizer, labels = train(recognizer)
+                        debugMsg(labels)
                         trained = True
+                        action = action_reset
             except Exception as e:
-                print("Error occurred: {0}".format(e))
-                action = action_reset #Reset action
+                debugMsg("Error occurred: {0}".format(e))
+                print("Error occurred while saving")
                 usrName = "" #Resets user name
+                action = action_reset
 
     elif action in actionList_exit:
         break

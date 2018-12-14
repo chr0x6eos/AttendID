@@ -22,7 +22,8 @@ project/attendID/*.bat
 tatü/*.bat
 .idea/
 
-
+*.idea
+*__pycache__
 *.png
 *.jpg
 *.bat
