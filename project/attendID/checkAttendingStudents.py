@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 #Importing all needed libraries / modules
-import cv2
 import os
 import sys
 import time
+from time import sleep, strftime
+
+import cv2
 import mysql.connector
-from time import sleep
-from time import strftime
+
 
 #Class for database connection and manipulation
 class DB_Connection:
