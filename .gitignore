@@ -8,6 +8,7 @@ project\face_recognition\_*
 project\attendID\*.bat
 tatü\*.bat
 .idea\
+.idea\*
 
 
 *.png
