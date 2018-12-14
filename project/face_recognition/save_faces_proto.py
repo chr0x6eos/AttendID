@@ -115,8 +115,6 @@ def writeName(name,x,y):
     stroke = 2
     cv2.putText(frame,name,(x,y), font, 1, color, stroke, cv2.LINE_AA)
 
-debugMsg ("Reading webcam")
-
 #How often webcam could not be read
 errorCam = 0
 
@@ -133,7 +131,7 @@ while True:
             sys.exit()
 
     #Sleep for performance
-    sleep(0.1)
+    #sleep(0.1)
 
     res, frame = webcam_capture.read()
     #Convert image to gray img
@@ -141,8 +139,7 @@ while True:
     faces = faceCascade.detectMultiScale(gray,scaleFactor=1.2,minNeighbors=5,minSize=(30, 30))
 
     if action in actionList_recognize:
-        #Insert action recognize here
-        if not trained:  # If not yet trained, try to train
+        if not trained:
             try:
                 recognizer, labels = train(recognizer)
                 debugMsg(labels)
@@ -218,8 +215,9 @@ while True:
 
     # Press q to exit program
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        cv2.destroyAllWindows()
         debugMsg("Force quit initiated")
-        break
+        action = action_reset
 
 debugMsg("Releasing webcam")
 # When everything is done, release the capture
