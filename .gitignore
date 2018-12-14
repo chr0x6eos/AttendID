@@ -4,8 +4,12 @@ project\face_recognition\faces\*
 project\face_recognition\trainer.yml
 project\face_recognition\labels.pickle
 project\face_recognition\_*
+#ignore bat files
 project\attendID\*.bat
 tatü\*.bat
+.idea\
+
+
 *.png
 *.jpg
 *.bat

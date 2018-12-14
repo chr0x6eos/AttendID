@@ -2,10 +2,9 @@ import os
 import pickle
 import random
 import sys
-from time import sleep, strftime
+from time import sleep
 #For image manipulation
 import cv2
-import numpy
 #For training the recognizer
 import train_faces
 
@@ -105,7 +104,7 @@ def setSaveParams():
 #Defines if the recognizer is already trained
 trained = False
 
-#Debug to print messagges
+#Debug to print messages
 debug = False
 
 debugMsg("Done importing")
@@ -125,7 +124,7 @@ action_reset = "125884016_reset" #random reset code
 
 #For debugging purpose
 if len(sys.argv) > 1:
-    debug = sys.argv[1] != None #Debug is used to print to console
+    debug = sys.argv[1] is not None  #Debug is used to print to console
 
 action = input("Enter the action to perform: \n Use 'save' for saving recognized faces to the file system or 'recognize' to recognized already identified faces or 'exit' to exit the script. \n")
 
@@ -198,7 +197,7 @@ while True:
                     else:
                         trained = True
             except Exception as e:
-                print("Error occured: {0}".format(e))
+                print("Error occurred: {0}".format(e))
                 action = action_reset #Reset action
                 usrName = "" #Resets user name
 
@@ -218,7 +217,7 @@ while True:
         print("Action unknown! Use: 'save' for saving recognized faces to the file system or 'recognize' to recognized already identified faces.")
         action = action_reset
     
-     #Press q to exit programm
+     #Press q to exit program
     if cv2.waitKey(1) & 0xFF == ord('q'):
         debugMsg("Force quit initiated")
         break
