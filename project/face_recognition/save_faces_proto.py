@@ -73,10 +73,12 @@ saved_faces = 0
 #Action values as lists
 actionList_recognize = ['recognize','r']
 actionList_save = ['save', 's']
+actionList_help = ['help', 'h']
 actionList_exit = ['exit','e', 'quit','q']
 actionList_debug = ['debug', 'd']
 actionList_NoDebug = ['no debug', 'nodebug', 'noDebug', 'nd', 'nD']
 action_reset = "125884016_reset" #random reset code
+
 
 #For debugging purpose
 if len(sys.argv) > 1:
@@ -171,7 +173,7 @@ while True:
             print("Could not create recognizer! Please check if there is data to train on")
             action = action_reset
 
-    elif action == action_reset:
+    elif action == action_reset: #Prompt user to set new action
         action = input("Enter the action to perform:")
         if action == "":
             print ("No action set! Use 'save' for saving recognized faces to the file system or 'recognize' to recognized already identified faces.")
@@ -202,7 +204,9 @@ while True:
                 print("Error occurred while saving")
                 usrName = ""  # Resets user name
                 action = action_reset
-
+    elif action in actionList_help:
+        print("The following actions can be set: 'Save' for saving recognized faces to the file system \n or 'recognize' to recognize already trained faces")
+        action = action_reset
     elif action in actionList_exit:
         break
     elif action in actionList_debug:
@@ -212,7 +216,7 @@ while True:
         debug = False
         action = action_reset
     else: 
-        print("Action unknown! Use: 'save' for saving recognized faces to the file system or 'recognize' to recognized already identified faces.")
+        print("Action unknown! Use: 'save' for saving recognized faces to the file system or 'recognize' to recognized already trained faces.")
         action = action_reset
 
     # Press q to exit program
